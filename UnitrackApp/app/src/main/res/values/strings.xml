@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Unitrack</string>
+    <string name="unitrack">Unitrack</string>
+    <string name="load_image">Load Image</string>
+    <string name="record">Record</string>
+    <string name="watch">Watch</string>
+    <string name="drawing_panel">Drawing panel</string>
+    <string name="resulting_image">Resulting Image</string>
 </resources>

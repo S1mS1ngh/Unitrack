@@ -5,6 +5,7 @@ package com.example.unitrack;
 import java.io.FileNotFoundException;
 
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -37,6 +38,9 @@ public class MainActivity extends Activity {
     Bitmap bitmapDrawingPane;
     Canvas canvasDrawingPane;
     projectPt startPt;
+
+    private static int VIDEO_REQUEST =101;
+    private Uri videoUri = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +139,7 @@ public class MainActivity extends Activity {
             Paint paint = new Paint();
             paint.setStyle(Paint.Style.STROKE);
             paint.setColor(Color.WHITE);
-            paint.setStrokeWidth(3);
+            paint.setStrokeWidth(10);
             canvasDrawingPane.drawRect(startPt.x, startPt.y, projectedX, projectedY, paint);
             imageDrawingPane.invalidate();
 
@@ -152,15 +156,21 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if(requestCode == VIDEO_REQUEST && resultCode == RESULT_OK){
+            videoUri = data.getData();
+        }
+
         super.onActivityResult(requestCode, resultCode, data);
 
         Bitmap tempBitmap;
 
         if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case RQS_IMAGE1:
+            if (requestCode == RQS_IMAGE1) {
+                //case RQS_IMAGE1:
                     source = data.getData();
-                    textSource.setText(source.toString());
+                assert source != null;
+                textSource.setText(source.toString());
 
                     try {
                         //tempBitmap is Immutable bitmap,
@@ -200,9 +210,23 @@ public class MainActivity extends Activity {
                         e.printStackTrace();
                     }
 
-                    break;
+                    //break;
             }
         }
+    }
+
+    public void Record(View view){
+        Intent videoIntent = new Intent (MediaStore.ACTION_VIDEO_CAPTURE);
+        if(videoIntent.resolveActivity (getPackageManager())!=null){
+            startActivityForResult(videoIntent, VIDEO_REQUEST);
+        }
+
+    }
+
+    public void Watch(View view){
+        Intent playVideo = new Intent(this,playVideo.class);
+        playVideo.putExtra("videoUri",videoUri.toString());
+        startActivity(playVideo);
     }
 
 }

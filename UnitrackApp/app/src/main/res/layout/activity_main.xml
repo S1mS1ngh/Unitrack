@@ -10,20 +10,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Unitrack"
+        android:fontFamily="monospace"
+        android:text="@string/unitrack"
+        android:textSize="30sp"
         android:textStyle="bold" />
-
-    <Button
-        android:id="@+id/loadimage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Load Image" />
-
-    <TextView
-        android:id="@+id/sourceuri"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal" />
 
     <!-- <ImageView
         android:id="@+id/Unitrackimage"
@@ -46,17 +36,54 @@
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:background="@android:color/background_dark"
-            android:scaleType="centerInside" />
+            android:scaleType="centerInside"
+            android:contentDescription="@string/resulting_image" />
         <ImageView
             android:id="@+id/drawingpane"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:scaleType="centerInside"
-            android:layout_alignLeft="@id/result"
+            android:layout_alignStart="@id/result"
             android:layout_alignTop="@id/result"
-            android:layout_alignRight="@id/result"
-            android:layout_alignBottom="@id/result"/>
+            android:layout_alignEnd="@id/result"
+            android:layout_alignBottom="@id/result"
+            android:contentDescription="@string/drawing_panel" />
+
+        <TextView
+            android:id="@+id/sourceuri"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/loadimage"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="5dp" />
+
+        <Button
+            android:id="@+id/loadimage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/Record"
+            android:layout_marginBottom="1dp"
+            android:text="@string/load_image" />
+
+        <Button
+            android:id="@+id/Record"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/Watch"
+            android:layout_marginBottom="1dp"
+            android:onClick="Record"
+            android:text="@string/record" />
+
+        <Button
+            android:id="@+id/Watch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="5dp"
+            android:onClick="Watch"
+            android:text="@string/watch" />
+
     </RelativeLayout>
 
 
