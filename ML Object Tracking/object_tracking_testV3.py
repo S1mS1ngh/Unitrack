@@ -8,8 +8,18 @@ import cv2
 import picamera
 import time
 from adafruit_servokit import ServoKit
+import requests
+
+#headers = {
+#        'Authorization': 'Bearer', 'rxmzbb1uuey22bk'
+#        'Dropbox-API-Arg': '{"path": "/capture.png","mode": "add","autorename": false,"mute": false,"strict_conflict": false}',
+#        'Content-Type': 'application/octet-stream',
+#}
 
 kit = ServoKit(channels = 16)
+kit.servo[0].set_pulse_width_range(1000, 2000)
+kit.servo[0].actuation_range = 120
+kit.servo[0].angle = 60
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
@@ -96,6 +106,15 @@ while True:
             (x, y, w, h) = [int(v) for v in box]
             cv2.rectangle(frame, (x, y), (x + w, y + h),
                 (0, 255, 0), 2)
+            if x > 260 and kit.servo[0].angle < 118 and kit.servo[0].angle > 2:
+                print(kit.servo[0].angle)
+                kit.servo[0].angle = kit.servo[0].angle - 1
+                
+            if x < 240 and kit.servo[0].angle > 2 and kit.servo[0].angle < 118:
+                kit.servo[0].angle = kit.servo[0].angle + 1
+                
+            print(kit.servo[0].angle)
+ 
  
         # update the FPS counter
         fps.update()
@@ -132,8 +151,9 @@ while True:
         # coordinates, then start the FPS throughput estimator as well
         tracker.init(frame, initBB)
         fps = FPS().start()
-        kit.servo[0].angle = 50
-        kit.servo[0].angle = 20
+        #cv2.imwrite('Capture.png', frame)
+        #data = open('Capture.png', 'rb').read()
+        #response = requests.post('https://content.dropboxapi.com/2/files/upload', headers=headers, data=data)
 
     # if the `q` key was pressed, break from the loop
     elif key == ord("q"):
@@ -149,3 +169,4 @@ else:
  
 # close all windows
 cv2.destroyAllWindows()
+
