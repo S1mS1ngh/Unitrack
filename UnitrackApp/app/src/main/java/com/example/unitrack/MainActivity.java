@@ -48,7 +48,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         //ImageView imageView = findViewById(R.id.Unitrackimage);
-        //String url = "https://www.dropbox.com/s/1l9ttno6nt2zgqb/Capture.PNG?raw=1"; //Change with different Host
+        //String url = "https://www.dropbox.com/s/rgbr1vwh613a422/image.jpg?raw=1"; //Change with different Host
         //Picasso.with(this).invalidate(url);
         //Picasso.with(this).load(url).into(imageView);
         //Todo MQTT
@@ -79,15 +79,18 @@ public class MainActivity extends Activity {
                 int y = (int) event.getY();
                 switch (action) {
                     case MotionEvent.ACTION_DOWN:
-                        textSource.setText("ACTION_DOWN- " + x + " : " + y);
+                        textSource.setText(x + " : " + y);
+                        //textSource.setText("ACTION_DOWN- " + x + " : " + y);
                         startPt = projectXY((ImageView) v, bitmapMaster, x, y);
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        textSource.setText("ACTION_MOVE- " + x + " : " + y);
+                        textSource.setText(x + " : " + y);
+                        //textSource.setText("ACTION_MOVE- " + x + " : " + y);
                         drawOnRectProjectedBitMap((ImageView) v, bitmapMaster, x, y);
                         break;
                     case MotionEvent.ACTION_UP:
-                        textSource.setText("ACTION_UP- " + x + " : " + y);
+                        textSource.setText(x + " : " + y);
+                        //textSource.setText("ACTION_UP- " + x + " : " + y);
                         drawOnRectProjectedBitMap((ImageView) v, bitmapMaster, x, y);
                         finalizeDrawing();
                         break;
@@ -223,10 +226,16 @@ public class MainActivity extends Activity {
 
     }
 
-    public void Watch(View view){
+    public void Watch(View view) {
+        Intent intent = new Intent(Intent.ACTION_VIEW,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivity(intent);
+    }
+
+/*    public void Watch(View view){
         Intent playVideo = new Intent(this,playVideo.class);
         playVideo.putExtra("videoUri",videoUri.toString());
         startActivity(playVideo);
-    }
+    }*/
 
 }
