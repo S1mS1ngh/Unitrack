@@ -1,0 +1,43 @@
+{
+    "logs": [
+        {
+            "outputFile": "C:\\Users\\singh2s7\\Documents\\GitHub\\aws-sdk-android-samples\\AndroidPubSubWebSocket\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\singh2s7\\.gradle\\caches\\transforms-1\\files-1.1\\aws-android-sdk-iot-2.16.3.aar\\f3aa43a649a066fa6200ca0b0f272eef\\res\\values\\strings.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "73",
+                        "endColumns": "44",
+                        "endOffsets": "113"
+                    },
+                    "to": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "115",
+                        "endColumns": "44",
+                        "endOffsets": "155"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\singh2s7\\Documents\\GitHub\\aws-sdk-android-samples\\AndroidPubSubWebSocket\\res\\values\\strings.xml",
+                    "from": {
+                        "startLines": "1",
+                        "startColumns": "4",
+                        "startOffsets": "16",
+                        "endColumns": "59",
+                        "endOffsets": "71"
+                    },
+                    "to": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "59",
+                        "endOffsets": "110"
+                    }
+                }
+            ]
+        }
+    ]
+}
