@@ -6,7 +6,7 @@
     android:orientation="vertical"
     tools:context=".MainActivity" >
 
-    <TextView
+    <!-- <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -15,7 +15,7 @@
         android:textSize="30sp"
         android:textStyle="bold" />
 
-    <!-- <ImageView
+    <ImageView
         android:id="@+id/Unitrackimage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -62,25 +62,26 @@
             android:id="@+id/loadimage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/Record"
-            android:layout_marginBottom="1dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="45dp"
             android:text="@string/load_image" />
 
         <Button
             android:id="@+id/Record"
-            android:layout_width="match_parent"
+            android:layout_width="207dp"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/Watch"
+            android:layout_alignParentBottom="true"
             android:layout_marginBottom="1dp"
             android:onClick="Record"
             android:text="@string/record" />
 
         <Button
             android:id="@+id/Watch"
-            android:layout_width="match_parent"
+            android:layout_width="207dp"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="1dp"
             android:onClick="Watch"
             android:text="@string/watch" />
 

@@ -1,6 +1,6 @@
 package com.example.unitrack;
 
-//import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Picasso;
 
 import java.io.FileNotFoundException;
 
@@ -16,13 +16,24 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff.Mode;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import java.io.UnsupportedEncodingException;
+import java.util.UUID;
+
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.mobileconnectors.iot.AWSIotMqttClientStatusCallback;
+import com.amazonaws.mobileconnectors.iot.AWSIotMqttManager;
+import com.amazonaws.mobileconnectors.iot.AWSIotMqttNewMessageCallback;
+import com.amazonaws.mobileconnectors.iot.AWSIotMqttQos;
+import com.amazonaws.regions.Regions;
 
 public class MainActivity extends Activity {
 
@@ -40,23 +51,21 @@ public class MainActivity extends Activity {
     projectPt startPt;
 
     private static int VIDEO_REQUEST =101;
-    private Uri videoUri = null;
+    //private Uri videoUri = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //ImageView imageView = findViewById(R.id.Unitrackimage);
-        //String url = "https://www.dropbox.com/s/rgbr1vwh613a422/image.jpg?raw=1"; //Change with different Host
-        //Picasso.with(this).invalidate(url);
-        //Picasso.with(this).load(url).into(imageView);
         //Todo MQTT
 
         btnLoadImage = findViewById(R.id.loadimage);
         textSource = findViewById(R.id.sourceuri);
         imageResult = findViewById(R.id.result);
         imageDrawingPane = findViewById(R.id.drawingpane);
+
+        //Picasso.get().load("https://www.dropbox.com/s/rgbr1vwh613a422/image.jpg?raw=1").into(imageResult);
 
         btnLoadImage.setOnClickListener(new OnClickListener() {
 
@@ -68,6 +77,7 @@ public class MainActivity extends Activity {
             }
         });
 
+        Picasso.get().load("https://www.dropbox.com/s/rgbr1vwh613a422/image.jpg?raw=1").fit().into(imageResult);
 
         imageResult.setOnTouchListener(new OnTouchListener() {
 
@@ -160,16 +170,16 @@ public class MainActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if(requestCode == VIDEO_REQUEST && resultCode == RESULT_OK){
-            videoUri = data.getData();
-        }
+        //if(requestCode == VIDEO_REQUEST && resultCode == RESULT_OK){
+        //    videoUri = data.getData();
+        //}
 
         super.onActivityResult(requestCode, resultCode, data);
 
         Bitmap tempBitmap;
 
-        if (resultCode == RESULT_OK) {
-            if (requestCode == RQS_IMAGE1) {
+        //if (resultCode == RESULT_OK) {
+            //if (requestCode == RQS_IMAGE1) {
                 //case RQS_IMAGE1:
                     source = data.getData();
                 assert source != null;
@@ -214,8 +224,8 @@ public class MainActivity extends Activity {
                     }
 
                     //break;
-            }
-        }
+            //}
+        //}
     }
 
     public void Record(View view){
