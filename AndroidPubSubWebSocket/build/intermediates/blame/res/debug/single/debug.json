@@ -1,7 +1,15 @@
 [
     {
+        "merged": "C:\\Users\\singh2s7\\Documents\\GitHub\\Unitrack\\AndroidPubSubWebSocket\\build\\intermediates\\res\\merged\\debug\\layout_activity_main.xml.flat",
+        "source": "C:\\Users\\singh2s7\\Documents\\GitHub\\Unitrack\\AndroidPubSubWebSocket\\res\\layout\\activity_main.xml"
+    },
+    {
         "merged": "C:\\Users\\singh2s7\\Documents\\GitHub\\aws-sdk-android-samples\\AndroidPubSubWebSocket\\build\\intermediates\\res\\merged\\debug\\drawable_ic_launcher.png.flat",
         "source": "C:\\Users\\singh2s7\\Documents\\GitHub\\aws-sdk-android-samples\\AndroidPubSubWebSocket\\res\\drawable\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\singh2s7\\Documents\\GitHub\\Unitrack\\AndroidPubSubWebSocket\\build\\intermediates\\res\\merged\\debug\\drawable_ic_launcher.png.flat",
+        "source": "C:\\Users\\singh2s7\\Documents\\GitHub\\Unitrack\\AndroidPubSubWebSocket\\res\\drawable\\ic_launcher.png"
     },
     {
         "merged": "C:\\Users\\singh2s7\\Documents\\GitHub\\aws-sdk-android-samples\\AndroidPubSubWebSocket\\build\\intermediates\\res\\merged\\debug\\layout_activity_main.xml.flat",

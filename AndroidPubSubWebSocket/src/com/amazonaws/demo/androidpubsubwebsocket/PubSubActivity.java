@@ -49,16 +49,16 @@ public class PubSubActivity extends Activity {
     // Region of AWS IoT
     private static final Regions MY_REGION = Regions.US_EAST_2;
 
-    EditText txtSubscribe;
-    EditText txtTopic;
-    EditText txtMessage;
+    //EditText txtSubscribe;
+    //EditText txtTopic;
+    //EditText txtMessage;
 
-    TextView tvLastMessage;
+    //TextView tvLastMessage;
     TextView tvClientId;
     TextView tvStatus;
 
     Button btnConnect;
-    Button btnSubscribe;
+    //Button btnSubscribe;
     Button btnPublish;
     Button btnDisconnect;
 
@@ -72,11 +72,11 @@ public class PubSubActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        txtSubscribe = (EditText) findViewById(R.id.txtSubscribe);
-        txtTopic = (EditText) findViewById(R.id.txtTopic);
-        txtMessage = (EditText) findViewById(R.id.txtMessage);
+        //txtSubscribe = (EditText) findViewById(R.id.txtSubscribe);
+        //txtTopic = (EditText) findViewById(R.id.txtTopic);
+        //txtMessage = (EditText) findViewById(R.id.txtMessage);
 
-        tvLastMessage = (TextView) findViewById(R.id.tvLastMessage);
+        //tvLastMessage = (TextView) findViewById(R.id.tvLastMessage);
         tvClientId = (TextView) findViewById(R.id.tvClientId);
         tvStatus = (TextView) findViewById(R.id.tvStatus);
 
@@ -84,8 +84,8 @@ public class PubSubActivity extends Activity {
         btnConnect.setOnClickListener(connectClick);
         btnConnect.setEnabled(false);
 
-        btnSubscribe = (Button) findViewById(R.id.btnSubscribe);
-        btnSubscribe.setOnClickListener(subscribeClick);
+        //btnSubscribe = (Button) findViewById(R.id.btnSubscribe);
+        //btnSubscribe.setOnClickListener(subscribeClick);
 
         btnPublish = (Button) findViewById(R.id.btnPublish);
         btnPublish.setOnClickListener(publishClick);
@@ -171,6 +171,8 @@ public class PubSubActivity extends Activity {
         }
     };
 
+    /*
+
     View.OnClickListener subscribeClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -208,12 +210,17 @@ public class PubSubActivity extends Activity {
         }
     };
 
+     */
+
     View.OnClickListener publishClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
-            final String topic = txtTopic.getText().toString();
-            final String msg = txtMessage.getText().toString();
+            final String topic = "demo-topic";
+            final String msg = "{" +
+                    " \"Coordinates\": " +
+                    " \"10,20,30,40\" " +
+                    "}";
 
             try {
                 mqttManager.publishString(msg, topic, AWSIotMqttQos.QOS0);

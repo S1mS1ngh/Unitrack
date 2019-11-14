@@ -1,7 +1,23 @@
 #Internal package file, do not edit.
-#Wed Nov 13 01:00:55 EST 2019
+#Wed Nov 13 21:44:53 EST 2019
+2.base=C\:\\Users\\singh2s7\\Documents\\GitHub\\Unitrack\\AndroidPubSubWebSocket\\build\\intermediates\\transforms\\dexMerger\\debug\\0
+0.path=lib/armeabi-v7a/libconscrypt_jni.so
+2.baseType=DIRECTORY
+3.base=C\:\\Users\\singh2s7\\Documents\\GitHub\\Unitrack\\AndroidPubSubWebSocket\\build\\intermediates\\transforms\\mergeJniLibs\\debug\\1
+2.set=DEX
+1.path=lib/x86_64/libconscrypt_jni.so
+4.base=C\:\\Users\\singh2s7\\Documents\\GitHub\\Unitrack\\AndroidPubSubWebSocket\\build\\intermediates\\transforms\\mergeJniLibs\\debug\\1
+count=5
+2.path=classes.dex
+4.set=NATIVE_RESOURCE
+3.path=lib/arm64-v8a/libconscrypt_jni.so
+3.baseType=DIRECTORY
+1.set=NATIVE_RESOURCE
+4.path=lib/x86/libconscrypt_jni.so
+1.baseType=DIRECTORY
+0.base=C\:\\Users\\singh2s7\\Documents\\GitHub\\Unitrack\\AndroidPubSubWebSocket\\build\\intermediates\\transforms\\mergeJniLibs\\debug\\1
 0.baseType=DIRECTORY
-0.base=C\:\\Users\\singh2s7\\Documents\\GitHub\\aws-sdk-android-samples\\AndroidPubSubWebSocket\\build\\intermediates\\transforms\\dexMerger\\debug\\0
-0.path=classes.dex
-0.set=DEX
-count=1
+3.set=NATIVE_RESOURCE
+1.base=C\:\\Users\\singh2s7\\Documents\\GitHub\\Unitrack\\AndroidPubSubWebSocket\\build\\intermediates\\transforms\\mergeJniLibs\\debug\\1
+4.baseType=DIRECTORY
+0.set=NATIVE_RESOURCE

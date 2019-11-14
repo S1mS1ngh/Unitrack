@@ -6,6 +6,8 @@
     android:orientation="vertical"
     tools:context=".MainActivity" >
 
+
+
     <!-- <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -50,40 +52,121 @@
             android:layout_alignBottom="@id/result"
             android:contentDescription="@string/drawing_panel" />
 
+        <Button
+            android:id="@+id/btnPublish"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/loadimage"
+            android:layout_gravity="left"
+            android:layout_marginBottom="0dp"
+            android:text="Publish" />
+
         <TextView
             android:id="@+id/sourceuri"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/loadimage"
+            android:layout_above="@+id/linlayout2"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="5dp" />
+            android:layout_marginBottom="0dp" />
 
         <Button
             android:id="@+id/loadimage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="45dp"
+            android:layout_above="@+id/linlayout3"
+            android:layout_marginBottom="0dp"
             android:text="@string/load_image" />
 
-        <Button
-            android:id="@+id/Record"
-            android:layout_width="207dp"
+        <LinearLayout
+            android:id="@+id/linlayout3"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="1dp"
-            android:onClick="Record"
-            android:text="@string/record" />
+            android:layout_marginBottom="0dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/Record"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:layout_weight="1"
+                android:onClick="Record"
+                android:text="@string/record" />
+
+            <Button
+                android:id="@+id/Watch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:layout_weight="1"
+                android:onClick="Watch"
+                android:text="@string/watch" />
+        </LinearLayout>
 
         <Button
-            android:id="@+id/Watch"
-            android:layout_width="207dp"
+            android:id="@+id/btnDisconnect"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="1dp"
-            android:onClick="Watch"
-            android:text="@string/watch" />
+            android:layout_above="@+id/btnPublish"
+            android:layout_marginBottom="0dp"
+            android:text="Disconnect" />
+
+        <Button
+            android:id="@+id/btnConnect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btnDisconnect"
+            android:text="Connect" />
+
+
+
+        <LinearLayout
+            android:id="@+id/linlayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btnConnect"
+            android:layout_marginBottom="0dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:gravity="center_vertical"
+                android:text="Status:" />
+
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:gravity="center_vertical"
+                android:text="Disconnected" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linlayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/linlayout"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:gravity="center_vertical"
+                android:text="Client Id:" />
+
+            <TextView
+                android:id="@+id/tvClientId"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:gravity="center_vertical" />
+        </LinearLayout>
 
     </RelativeLayout>
 
