@@ -40,11 +40,8 @@ public class MainActivity extends Activity {
     static final String LOG_TAG = MainActivity.class.getCanonicalName();
 
     public static int xvalue1;
-
     public static int xvalue2;
-
     public static int yvalue1;
-
     public static int yvalue2;
 
 
@@ -63,7 +60,7 @@ public class MainActivity extends Activity {
 
     //EditText txtSubscribe;
     //EditText txtTopic;
-    EditText txtMessage;
+    //EditText txtMessage;
 
     //TextView tvLastMessage;
     TextView tvClientId;
@@ -72,6 +69,8 @@ public class MainActivity extends Activity {
     Button btnConnect;
     //Button btnSubscribe;
     Button btnPublish;
+    Button btnStart;
+    Button btnStop;
     Button btnDisconnect;
 
     AWSIotMqttManager mqttManager;
@@ -124,6 +123,12 @@ public class MainActivity extends Activity {
 
         btnPublish = (Button) findViewById(R.id.btnPublish);
         btnPublish.setOnClickListener(publishClick);
+
+        btnStart = (Button) findViewById(R.id.btnStart);
+        btnStart.setOnClickListener(startClick);
+
+        btnStop = (Button) findViewById(R.id.btnStop);
+        btnStop.setOnClickListener(stopClick);
 
         btnDisconnect = (Button) findViewById(R.id.btnDisconnect);
         btnDisconnect.setOnClickListener(disconnectClick);
@@ -316,6 +321,44 @@ public class MainActivity extends Activity {
         }
     };
 
+    View.OnClickListener startClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            final String topic = "demo-topic";
+            final String msg = "{" +
+                    " \"start\": " +
+                    " \"1\" " +
+                    "}";
+
+            try {
+                mqttManager.publishString(msg, topic, AWSIotMqttQos.QOS0);
+            } catch (Exception e) {
+                Log.e(LOG_TAG, "Publish error.", e);
+            }
+
+        }
+    };
+
+    View.OnClickListener stopClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            final String topic = "demo-topic";
+            final String msg = "{" +
+                    " \"stop\": " +
+                    " \"1\" " +
+                    "}";
+
+            try {
+                mqttManager.publishString(msg, topic, AWSIotMqttQos.QOS0);
+            } catch (Exception e) {
+                Log.e(LOG_TAG, "Publish error.", e);
+            }
+
+        }
+    };
+
     View.OnClickListener disconnectClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -446,6 +489,8 @@ public class MainActivity extends Activity {
         //}
     }
 
+    /*
+
     public void Record(View view){
         Intent videoIntent = new Intent (MediaStore.ACTION_VIDEO_CAPTURE);
         if(videoIntent.resolveActivity (getPackageManager())!=null){
@@ -460,7 +505,7 @@ public class MainActivity extends Activity {
         startActivity(intent);
     }
 
-/*    public void Watch(View view){
+    public void Watch(View view){
         Intent playVideo = new Intent(this,playVideo.class);
         playVideo.putExtra("videoUri",videoUri.toString());
         startActivity(playVideo);
