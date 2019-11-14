@@ -39,6 +39,15 @@ public class MainActivity extends Activity {
 
     static final String LOG_TAG = MainActivity.class.getCanonicalName();
 
+    public static int xvalue1;
+
+    public static int xvalue2;
+
+    public static int yvalue1;
+
+    public static int yvalue2;
+
+
     // --- Constants to modify per your configuration ---
 
     // Customer specific IoT endpoint
@@ -295,7 +304,7 @@ public class MainActivity extends Activity {
             final String topic = "demo-topic";
             final String msg = "{" +
                     " \"Coordinates\": " +
-                    " \"10,20,30,40\" " +
+                    " \"" + MainActivity.xvalue1 + "," + MainActivity.yvalue1 + "," + MainActivity.xvalue2 + "," + MainActivity.yvalue2 + "\" " +
                     "}";
 
             try {
@@ -357,13 +366,18 @@ public class MainActivity extends Activity {
             paint.setStyle(Paint.Style.STROKE);
             paint.setColor(Color.WHITE);
             paint.setStrokeWidth(10);
-            canvasDrawingPane.drawRect(startPt.x, startPt.y, projectedX, projectedY, paint);
+            canvasDrawingPane.drawRect(startPt.x, startPt.y, projectedX, projectedY, paint); //TRY HERE
             imageDrawingPane.invalidate();
 
 
             textSource.setText(x + ":" + y + "/" + iv.getWidth() + " : " + iv.getHeight() + "\n" +
                     projectedX + " : " + projectedY + "/" + bm.getWidth() + " : " + bm.getHeight()
             );
+
+            MainActivity.xvalue1 = startPt.x;
+            MainActivity.xvalue2 = projectedX;
+            MainActivity.yvalue1 = startPt.y;
+            MainActivity.yvalue2 = projectedY;
         }
     }
 
