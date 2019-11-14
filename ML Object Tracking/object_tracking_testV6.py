@@ -42,6 +42,7 @@ BACKUPPATH = '/image.jpg'
 
 kit = ServoKit(channels = 16)
 kit.continuous_servo[0].set_pulse_width_range(700, 2300)
+stop = 0
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
@@ -61,7 +62,6 @@ def customCallback(client, userdata, message):
     print("--------------\n\n")
     
     customCallback.dataout = json.loads(message.payload)
-    customCallback.dataout = customCallback.dataout['Coordinates']
     print(customCallback.dataout)
 
 def backup():
@@ -85,6 +85,9 @@ def backup():
                 sys.exit()
                 
 myMQTTClient.subscribe(topic, 1, customCallback)
+myMQTTClient.publish("demo-topic", '{ "start" : "0" }', 1)
+myMQTTClient.publish("demo-topic", '{ "stop" : "0" }', 1)
+
 
 # extract the OpenCV version info
 (major, minor) = cv2.__version__.split(".")[:2]
@@ -139,7 +142,11 @@ fps = None
 failures = 0
 
 # loop over frames from the video stream
-while True:
+while stop == 0:
+    try:
+        stop = int(customCallback.dataout['stop'])
+    except:
+        stop = 0
     # grab the current frame, then handle if we are using a
     # VideoStream or VideoCapture object
     frame = vs.read()
@@ -207,7 +214,8 @@ while True:
     if failures > 10:
         print("Failure! Please press s to select new ROI")
         kit.continuous_servo[0].throttle = 0
-        while(key != ord("s")):
+        
+        while(start == 0):
             frame = vs.read()
             frame = frame[1] if args.get("video", False) else frame
          
@@ -221,11 +229,21 @@ while True:
             (H, W) = frame.shape[:2]
             cv2.imshow("Frame", frame)
             key = cv2.waitKey(1) & 0xFF
-        
+            try:
+                start = int(customCallback.dataout['start'])
+            except:
+                start = 0
+    
  
     # if the 's' key is selected, we are going to "select" a bounding
     # box to track
-    if key == ord("s") or failures > 10:
+    try:
+        start = int(customCallback.dataout['start'])
+    except:
+        start = 0
+    if start == 1 or failures > 10:
+        
+        myMQTTClient.publish("demo-topic", '{ "start" : "0" }', 1)
         cv2.imwrite('image.jpg', frame)
         #response = requests.post('https://content.dropboxapi.com/2/files/upload', headers=headers, data=data)
         if (len(TOKEN) == 0):
@@ -256,7 +274,7 @@ while True:
             # showCrosshair=True)
         while(1):
             try:
-                coordinates = customCallback.dataout.split(',')
+                coordinates = customCallback.dataout['Coordinates'].split(',')
                 break
             except:
                 pass
@@ -273,7 +291,12 @@ while True:
         
 
         # if the `q` key was pressed, break from the loop
-    elif key == ord("q"):
+        try:
+            stop = int(customCallback.dataout['stop'])
+        except:
+            stop = 0
+    
+    elif stop == 1:
         break
  
 # if we are using a webcam, release the pointer
@@ -287,3 +310,4 @@ else:
 # close all windows
 cv2.destroyAllWindows()
 kit.continuous_servo[0].throttle = 0
+myMQTTClient.publish("demo-topic", '{ "stop" : "0" }', 1)
