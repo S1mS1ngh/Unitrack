@@ -1,6 +1,9 @@
 # import the necessary packages
+from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTClient
 from imutils.video import VideoStream
 from imutils.video import FPS
+import logging
+import json
 import argparse
 import imutils
 import time
@@ -14,6 +17,21 @@ import dropbox
 from dropbox.files import WriteMode
 from dropbox.exceptions import ApiError, AuthError
 
+topic = "demo-topic"
+
+myMQTTClient = AWSIoTMQTTClient("Unitrack")
+
+myMQTTClient.configureEndpoint("a1t8x9a9l0hxhj-ats.iot.us-east-2.amazonaws.com", 8883)
+
+myMQTTClient.configureCredentials("/home/pi/awstest/AmazonRootCA1.pem", "/home/pi/awstest/6889f5cfb0-private.pem.key", "/home/pi/awstest/6889f5cfb0-certificate.pem.crt")
+
+myMQTTClient.configureOfflinePublishQueueing(-1)  # Infinite offline Publish queueing
+myMQTTClient.configureDrainingFrequency(2)  # Draining: 2 Hz
+myMQTTClient.configureConnectDisconnectTimeout(10)  # 10 sec
+myMQTTClient.configureMQTTOperationTimeout(5)  # 5 sec
+
+myMQTTClient.connect()
+
 # Add OAuth2 access token here.
 # You can generate one for yourself in the App Console.
 # See <https://blogs.dropbox.com/developers/2014/05/generate-an-access-token-for-your-own-account/>
@@ -23,9 +41,7 @@ LOCALFILE = 'image.jpg'
 BACKUPPATH = '/image.jpg'
 
 kit = ServoKit(channels = 16)
-kit.servo[0].set_pulse_width_range(1000, 2000)
-kit.servo[0].actuation_range = 120
-kit.servo[0].angle = 60
+kit.continuous_servo[0].set_pulse_width_range(700, 2300)
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
@@ -34,6 +50,18 @@ ap.add_argument("-v", "--video", type=str,
 ap.add_argument("-t", "--tracker", type=str, default="kcf",
     help="OpenCV object tracker type")
 args = vars(ap.parse_args())
+
+#dataout = None
+
+def customCallback(client, userdata, message):
+    print("Received a new message: ")
+    print(message.payload)
+    print("from topic: ")
+    print(message.topic)
+    print("--------------\n\n")
+    customCallback.dataout = json.loads(message.payload)
+    customCallback.dataout = customCallback.dataout['Coordinates']
+    print(customCallback.dataout)
 
 def backup():
     with open(LOCALFILE, 'rb') as f:
@@ -54,7 +82,8 @@ def backup():
             else:
                 print(err)
                 sys.exit()
-
+                
+myMQTTClient.subscribe(topic, 1, customCallback)
 
 # extract the OpenCV version info
 (major, minor) = cv2.__version__.split(".")[:2]
@@ -135,14 +164,18 @@ while True:
             (x, y, w, h) = [int(v) for v in box]
             cv2.rectangle(frame, (x, y), (x + w, y + h),
                 (0, 255, 0), 2)
-            if x > 260 and kit.servo[0].angle < 118 and kit.servo[0].angle > 2:
-                print(kit.servo[0].angle)
-                kit.servo[0].angle = kit.servo[0].angle - 1
+            x_pos = x + w/2
+            print(x_pos)
+            if x_pos > 250 + w/2:
+                kit.continuous_servo[0].throttle = -.01
                 
-            if x < 240 and kit.servo[0].angle > 2 and kit.servo[0].angle < 118:
-                kit.servo[0].angle = kit.servo[0].angle + 1
+            elif x_pos < 250 - w/2:
+                kit.continuous_servo[0].throttle = .01
+            
+            else:
+                kit.continuous_servo[0].throttle = 0
                 
-            print(kit.servo[0].angle)
+            print(kit.continuous_servo[0].throttle)
         else:
             failures = failures + 1
             print("Failures: " + str(failures))
@@ -172,6 +205,7 @@ while True:
     
     if failures > 10:
         print("Failure! Please press s to select new ROI")
+        kit.continuous_servo[0].throttle = 0
         while(key != ord("s")):
             frame = vs.read()
             frame = frame[1] if args.get("video", False) else frame
@@ -194,8 +228,12 @@ while True:
         # select the bounding box of the object we want to track (make
         # sure you press ENTER or SPACE after selecting the ROI)
         failures = 0
+        kit.continuous_servo[0].throttle = 0
         initBB = cv2.selectROI("Frame", frame, fromCenter=False,
             showCrosshair=True)
+#        coordinates = customCallback.dataout.split(',')
+#        print(coordinates)
+#        initBB = (int(coordinates[0]), int(coordinates[1]), int(coordinates[2]), int(coordinates[3]))
         print(initBB)
  
         # start OpenCV object tracker using the supplied bounding box
@@ -238,3 +276,4 @@ else:
  
 # close all windows
 cv2.destroyAllWindows()
+kit.continuous_servo[0].throttle = 0
