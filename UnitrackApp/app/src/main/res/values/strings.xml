@@ -6,4 +6,6 @@
     <string name="watch">Watch</string>
     <string name="drawing_panel">Drawing panel</string>
     <string name="resulting_image">Resulting Image</string>
+    <string name="set_coordinates">Set Coordinates</string>
+    <string name="set_image">set_image</string>
 </resources>

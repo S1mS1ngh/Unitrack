@@ -1,7 +1,9 @@
 package com.example.unitrack;
 
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 
 import android.net.Uri;
@@ -22,16 +24,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import java.io.UnsupportedEncodingException;
+
 import java.util.UUID;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.iot.AWSIotMqttClientStatusCallback;
 import com.amazonaws.mobileconnectors.iot.AWSIotMqttManager;
-import com.amazonaws.mobileconnectors.iot.AWSIotMqttNewMessageCallback;
 import com.amazonaws.mobileconnectors.iot.AWSIotMqttQos;
 import com.amazonaws.regions.Regions;
 
@@ -58,12 +58,14 @@ public class MainActivity extends Activity {
     // Region of AWS IoT
     private static final Regions MY_REGION = Regions.US_EAST_2;
 
+    Button btnReload;
+
     //EditText txtSubscribe;
     //EditText txtTopic;
     //EditText txtMessage;
 
     //TextView tvLastMessage;
-    TextView tvClientId;
+    //TextView tvClientId;
     TextView tvStatus;
 
     Button btnConnect;
@@ -71,7 +73,7 @@ public class MainActivity extends Activity {
     Button btnPublish;
     Button btnStart;
     Button btnStop;
-    Button btnDisconnect;
+    //Button btnDisconnect;
 
     AWSIotMqttManager mqttManager;
     String clientId;
@@ -79,7 +81,7 @@ public class MainActivity extends Activity {
     CognitoCachingCredentialsProvider credentialsProvider;
 
     Button btnLoadImage;
-    TextView textSource;
+    //TextView textSource;
     ImageView imageResult, imageDrawingPane;
 
     final int RQS_IMAGE1 = 1;
@@ -99,10 +101,11 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Todo MQTT
+        btnReload = findViewById(R.id.btnReload);
+        btnReload.setOnClickListener(reloadClick);
 
         btnLoadImage = findViewById(R.id.loadimage);
-        textSource = findViewById(R.id.sourceuri);
+        //textSource = findViewById(R.id.sourceuri);
         imageResult = findViewById(R.id.result);
         imageDrawingPane = findViewById(R.id.drawingpane);
 
@@ -111,7 +114,7 @@ public class MainActivity extends Activity {
         //txtMessage = (EditText) findViewById(R.id.txtMessage);
 
         //tvLastMessage = (TextView) findViewById(R.id.tvLastMessage);
-        tvClientId = (TextView) findViewById(R.id.tvClientId);
+        //tvClientId = (TextView) findViewById(R.id.tvClientId);
         tvStatus = (TextView) findViewById(R.id.tvStatus);
 
         btnConnect = (Button) findViewById(R.id.btnConnect);
@@ -130,14 +133,14 @@ public class MainActivity extends Activity {
         btnStop = (Button) findViewById(R.id.btnStop);
         btnStop.setOnClickListener(stopClick);
 
-        btnDisconnect = (Button) findViewById(R.id.btnDisconnect);
-        btnDisconnect.setOnClickListener(disconnectClick);
+        //btnDisconnect = (Button) findViewById(R.id.btnDisconnect);
+        //btnDisconnect.setOnClickListener(disconnectClick);
 
         // MQTT client IDs are required to be unique per AWS IoT account.
         // This UUID is "practically unique" but does not _guarantee_
         // uniqueness.
         clientId = UUID.randomUUID().toString();
-        tvClientId.setText(clientId);
+        //tvClientId.setText(clientId);
 
         // Initialize the AWS Cognito credentials provider
         credentialsProvider = new CognitoCachingCredentialsProvider(
@@ -162,19 +165,18 @@ public class MainActivity extends Activity {
             }
         }).start();
 
-        //Picasso.get().load("https://www.dropbox.com/s/rgbr1vwh613a422/image.jpg?raw=1").into(imageResult);
-
         btnLoadImage.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
+                //imageResult.setImageResource(R.drawable.logoimg);
                 Intent intent = new Intent(Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, RQS_IMAGE1);
             }
         });
 
-        Picasso.get().load("https://www.dropbox.com/s/rgbr1vwh613a422/image.jpg?raw=1").fit().into(imageResult);
+        Picasso.get().load("https://www.dropbox.com/s/rgbr1vwh613a422/image.jpg?raw=1").memoryPolicy(MemoryPolicy.NO_CACHE).fit().into(imageResult);
 
         imageResult.setOnTouchListener(new OnTouchListener() {
 
@@ -186,17 +188,17 @@ public class MainActivity extends Activity {
                 int y = (int) event.getY();
                 switch (action) {
                     case MotionEvent.ACTION_DOWN:
-                        textSource.setText(x + " : " + y);
+                        //textSource.setText(x + " : " + y);
                         //textSource.setText("ACTION_DOWN- " + x + " : " + y);
                         startPt = projectXY((ImageView) v, bitmapMaster, x, y);
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        textSource.setText(x + " : " + y);
+                        //textSource.setText(x + " : " + y);
                         //textSource.setText("ACTION_MOVE- " + x + " : " + y);
                         drawOnRectProjectedBitMap((ImageView) v, bitmapMaster, x, y);
                         break;
                     case MotionEvent.ACTION_UP:
-                        textSource.setText(x + " : " + y);
+                        //textSource.setText(x + " : " + y);
                         //textSource.setText("ACTION_UP- " + x + " : " + y);
                         drawOnRectProjectedBitMap((ImageView) v, bitmapMaster, x, y);
                         finalizeDrawing();
@@ -217,46 +219,61 @@ public class MainActivity extends Activity {
         @Override
         public void onClick(View v) {
 
+            boolean enable = true;
+
             Log.d(LOG_TAG, "clientId = " + clientId);
 
-            try {
-                mqttManager.connect(credentialsProvider, new AWSIotMqttClientStatusCallback() {
-                    @Override
-                    public void onStatusChanged(final AWSIotMqttClientStatus status,
-                                                final Throwable throwable) {
-                        Log.d(LOG_TAG, "Status = " + String.valueOf(status));
 
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (status == AWSIotMqttClientStatus.Connecting) {
-                                    tvStatus.setText("Connecting...");
+            if (enable) {
+                enable = false;
+                try {
+                    mqttManager.connect(credentialsProvider, new AWSIotMqttClientStatusCallback() {
+                        @Override
+                        public void onStatusChanged(final AWSIotMqttClientStatus status,
+                                                    final Throwable throwable) {
+                            Log.d(LOG_TAG, "Status = " + String.valueOf(status));
 
-                                } else if (status == AWSIotMqttClientStatus.Connected) {
-                                    tvStatus.setText("Connected");
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (status == AWSIotMqttClientStatus.Connecting) {
+                                        tvStatus.setText("Connecting...");
 
-                                } else if (status == AWSIotMqttClientStatus.Reconnecting) {
-                                    if (throwable != null) {
-                                        Log.e(LOG_TAG, "Connection error.", throwable);
+                                    } else if (status == AWSIotMqttClientStatus.Connected) {
+                                        tvStatus.setText("Connected");
+
+                                    } else if (status == AWSIotMqttClientStatus.Reconnecting) {
+                                        if (throwable != null) {
+                                            Log.e(LOG_TAG, "Connection error.", throwable);
+                                        }
+                                        tvStatus.setText("Reconnecting");
+                                    } else if (status == AWSIotMqttClientStatus.ConnectionLost) {
+                                        if (throwable != null) {
+                                            Log.e(LOG_TAG, "Connection error.", throwable);
+                                            throwable.printStackTrace();
+                                        }
+                                        tvStatus.setText("Disconnected");
+                                    } else {
+                                        tvStatus.setText("Disconnected");
+
                                     }
-                                    tvStatus.setText("Reconnecting");
-                                } else if (status == AWSIotMqttClientStatus.ConnectionLost) {
-                                    if (throwable != null) {
-                                        Log.e(LOG_TAG, "Connection error.", throwable);
-                                        throwable.printStackTrace();
-                                    }
-                                    tvStatus.setText("Disconnected");
-                                } else {
-                                    tvStatus.setText("Disconnected");
-
                                 }
-                            }
-                        });
-                    }
-                });
-            } catch (final Exception e) {
-                Log.e(LOG_TAG, "Connection error.", e);
-                tvStatus.setText("Error! " + e.getMessage());
+                            });
+                        }
+                    });
+                } catch (final Exception e) {
+                    Log.e(LOG_TAG, "Connection error.", e);
+                    tvStatus.setText("Error! " + e.getMessage());
+                }
+            }
+
+            if (!enable) {
+                enable = true;
+                try {
+                    mqttManager.disconnect();
+                } catch (Exception e) {
+                    Log.e(LOG_TAG, "Disconnect error.", e);
+                }
             }
         }
     };
@@ -359,6 +376,15 @@ public class MainActivity extends Activity {
         }
     };
 
+    View.OnClickListener reloadClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Picasso.get().load("https://www.dropbox.com/s/rgbr1vwh613a422/image.jpg?raw=1").memoryPolicy(MemoryPolicy.NO_CACHE).fit().into(imageResult);
+        }
+    };
+
+    /*
+
     View.OnClickListener disconnectClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -371,6 +397,8 @@ public class MainActivity extends Activity {
 
         }
     };
+
+     */
 
     class projectPt {
         int x;
@@ -409,13 +437,13 @@ public class MainActivity extends Activity {
             paint.setStyle(Paint.Style.STROKE);
             paint.setColor(Color.WHITE);
             paint.setStrokeWidth(10);
-            canvasDrawingPane.drawRect(startPt.x, startPt.y, projectedX, projectedY, paint); //TRY HERE
+            canvasDrawingPane.drawRect(startPt.x, startPt.y, projectedX, projectedY, paint);
             imageDrawingPane.invalidate();
 
 
-            textSource.setText(x + ":" + y + "/" + iv.getWidth() + " : " + iv.getHeight() + "\n" +
-                    projectedX + " : " + projectedY + "/" + bm.getWidth() + " : " + bm.getHeight()
-            );
+            //textSource.setText(x + ":" + y + "/" + iv.getWidth() + " : " + iv.getHeight() + "\n" +
+            //        projectedX + " : " + projectedY + "/" + bm.getWidth() + " : " + bm.getHeight()
+            //);
 
             MainActivity.xvalue1 = startPt.x;
             MainActivity.xvalue2 = projectedX;
@@ -444,7 +472,7 @@ public class MainActivity extends Activity {
                 //case RQS_IMAGE1:
                     source = data.getData();
                 assert source != null;
-                textSource.setText(source.toString());
+                //textSource.setText(source.toString());
 
                     try {
                         //tempBitmap is Immutable bitmap,
@@ -489,7 +517,7 @@ public class MainActivity extends Activity {
         //}
     }
 
-    /*
+
 
     public void Record(View view){
         Intent videoIntent = new Intent (MediaStore.ACTION_VIDEO_CAPTURE);
@@ -504,6 +532,8 @@ public class MainActivity extends Activity {
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivity(intent);
     }
+
+    /*
 
     public void Watch(View view){
         Intent playVideo = new Intent(this,playVideo.class);

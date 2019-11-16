@@ -8,7 +8,7 @@
 
 
 
-    <!-- <TextView
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -16,6 +16,8 @@
         android:text="@string/unitrack"
         android:textSize="30sp"
         android:textStyle="bold" />
+
+    <!--
 
     <ImageView
         android:id="@+id/Unitrackimage"
@@ -56,10 +58,12 @@
             android:id="@+id/btnPublish"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/loadimage"
+            android:layout_above="@+id/linlayout3"
             android:layout_gravity="left"
             android:layout_marginBottom="0dp"
-            android:text="Publish" />
+            android:text="@string/set_coordinates" />
+
+        <!--
 
         <TextView
             android:id="@+id/sourceuri"
@@ -69,20 +73,21 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="0dp" />
 
+            -->
+
         <Button
             android:id="@+id/loadimage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/linlayout3"
+            android:layout_above="@+id/btnReload"
             android:layout_marginBottom="0dp"
-            android:text="@string/load_image" />
+            android:text="set image" />
 
         <LinearLayout
             android:id="@+id/linlayout3"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="0dp"
+            android:layout_above="@+id/linlayout4"
             android:orientation="horizontal"
             android:weightSum="2">
 
@@ -103,6 +108,34 @@
                 android:text="Stop" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/linlayout4"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="0dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <Button
+                android:onClick="Record"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:layout_weight="1"
+                android:text="Record" />
+
+            <Button
+                android:onClick="Watch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:layout_weight="1"
+                android:text="Watch" />
+        </LinearLayout>
+
+        <!--
+
         <Button
             android:id="@+id/btnDisconnect"
             android:layout_width="match_parent"
@@ -111,11 +144,13 @@
             android:layout_marginBottom="0dp"
             android:text="Disconnect" />
 
+         -->
+
         <Button
             android:id="@+id/btnConnect"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/btnDisconnect"
+            android:layout_above="@+id/loadimage"
             android:text="Connect" />
 
 
@@ -144,6 +179,16 @@
                 android:text="Disconnected" />
         </LinearLayout>
 
+        <Button
+            android:id="@+id/btnReload"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btnPublish"
+            android:layout_marginBottom="0dp"
+            android:text="Reload Image" />
+
+        <!--
+
         <LinearLayout
             android:id="@+id/linlayout2"
             android:layout_width="match_parent"
@@ -165,6 +210,8 @@
                 android:layout_weight="5"
                 android:gravity="center_vertical" />
         </LinearLayout>
+
+        -->
 
     </RelativeLayout>
 
